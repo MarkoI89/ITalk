@@ -16,5 +16,6 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    'vue/script-setup-uses-vars': 'error',
   },
 }

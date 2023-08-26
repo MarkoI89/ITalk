@@ -17,3 +17,16 @@
     border-radius: 5px;
     padding: 40px 10px 30px 10px;
 }
+
+.loginButton{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}
+
+.loginButton p{
+  margin: 0;
+  font-family: arial
+}
