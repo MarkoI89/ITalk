@@ -8,7 +8,7 @@ const AuthContext = createContext();
 function AuthProviderWrapper(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
 
   const storeToken = (token) => {
     localStorage.setItem("authToken", token);
