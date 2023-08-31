@@ -53,8 +53,11 @@ router.post("/signup", (req, res, next) => {
 router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
 
-  if (email === "" && password === "") {
-    res.status(400).json({ message: "Provide email and password" });
+  if (email === "") {
+    res.status(400).json({ message: "Enter your email" });
+    return;
+  } else if (password === "") {
+    res.status(400).json({ message: "Enter your Password" });
     return;
   }
 
@@ -69,7 +72,7 @@ router.post("/login", (req, res, next) => {
 
       if (passwordCorrect) {
         const { _id, email, firstName, lastName } = foundUser;
-        console.log(foundUser)
+        console.log(foundUser);
 
         const payload = { _id, email, firstName, lastName };
 
@@ -87,9 +90,6 @@ router.post("/login", (req, res, next) => {
     .catch((err) => res.status(500).json({ message: "Internal Server error" }));
 });
 
-router.get("/verify", verifyToken, (req, res, next) => {
-  console.log(`req.payload`, req.payload);
-  res.status(200).json(req.payload);
-});
+router.get("/verify", verifyToken, (req, res) => res.json(req.user));
 
 export default router;

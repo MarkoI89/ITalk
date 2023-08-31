@@ -29,7 +29,7 @@ const UserSchema = new mongoose.Schema(
     },
     picturePath: {
       type: String,
-      default: "",
+      default: "/img/blank-profile-picture-973460_640.png",
     },
   },
   { timestamps: true }
