@@ -8,7 +8,7 @@ const AuthContext = createContext();
 function AuthProviderWrapper(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState("");
 
   const storeToken = (token) => {
     localStorage.setItem("authToken", token);
@@ -16,6 +16,7 @@ function AuthProviderWrapper(props) {
 
   const authenticateUser = () => {
     const storedToken = localStorage.getItem("authToken");
+    console.log(storedToken)
     if (storedToken) {
       axios
         .get(
@@ -24,6 +25,7 @@ function AuthProviderWrapper(props) {
         )
         .then((response) => {
           const user = response.data;
+          console.log(user)
           setIsLoggedIn(true);
           setIsLoading(false);
           setUser(user);
@@ -62,7 +64,7 @@ function AuthProviderWrapper(props) {
 }
 
 AuthProviderWrapper.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
 };
 
 export { AuthProviderWrapper, AuthContext };
