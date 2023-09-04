@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/auth.context";
+import { useNavigate } from "react-router";
 import axios from "axios";
 import "../currentUser/currentUser.css";
 import MessageIcon from "@mui/icons-material/Message";
@@ -15,21 +16,24 @@ function CurrentUser() {
   // const { token } = useContext(AuthContext);
   const { user, logOutUser, isLoading, setIsLoading } = useContext(AuthContext);
   console.log(storedToken);
-  const getUser = () => {
-    axios
-      .get(`http://localhost:3002/user/${user._id}`, {
-        headers: { Authorization: `Bearer ${storedToken}` },
-      })
-      .then((res) => {
-        const user = res.data;
-        setLoggedUser(user);
-        setIsLoggedIn(true);
-      });
-  };
+
+  const navigate = useNavigate()
+
+  if(!user){
+    navigate("/login")
+  }
 
   useEffect(() => {
-    getUser();
-  }, [user]);
+      axios
+        .get(`http://localhost:3002/user/${user._id}`, {
+          headers: { Authorization: `Bearer ${storedToken}` },
+        })
+        .then((res) => {
+          const user = res.data;
+          setLoggedUser(user);
+          setIsLoggedIn(true);
+        })
+  }, [storedToken, user._id]);
 
   return (
     <div className="home">

@@ -3,16 +3,20 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/auth.context.jsx";
 import axios from "axios";
 import avatar from "../../assets/blank-profile-picture-973460_640.png";
+import SendMessage from "../sendMessage/SendMessage";
+// import useDetectKeyboardOpen from "use-detect-keyboard-open"
 
 function AllMessages() {
   const [messages, setMessages] = useState([]);
-  const { user } = useContext(AuthContext);
   const [currentIndex, setCurrentIndex] = useState(null);
   const [itrlFirstName, setItrlFirstName] = useState(null); // itrl => interlocutor
   const [itrlLastName, setItrlLastName] = useState(null);
   const [itrlId, setItrlId] = useState(null);
   const [itrlAvatar, setItrlAvatar] = useState(null);
   const [chatModal, setChatModal] = useState(null);
+  const { user } = useContext(AuthContext);
+
+  // const isKeyboardOpen = useDetectKeyboardOpen()
 
   console.log(user._id);
   const storedToken = localStorage.getItem("authToken");
@@ -55,11 +59,11 @@ function AllMessages() {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
       .then((res) => {
-        const msg = res.data;
-        setMessages(msg);
-        console.log(msg);
+        // const msg = res.data;
+        setMessages(res.data);
+        // console.log(msg);
       });
-  }, []);
+  }, [user._id, storedToken]);
   console.log(messages);
 
   let allUserMessages = messages
@@ -148,12 +152,15 @@ function AllMessages() {
                         : "interlocutorAuthorMsg"
                     }
                   >
-                    <div><p>{message.text}</p></div>
+                    <div>
+                      <p>{message.text}</p>
+                    </div>
                   </div>
                 );
               }
             })}
           </div>
+          <SendMessage receiver={itrlId} />
         </div>
       )}
     </>

@@ -25,8 +25,7 @@ function Login(props) {
     axios
       .post(`http://localhost:3002/auth/login`, requestBody)
       .then((response) => {
-        navigate(`/user`);
-        console.log("JWT token", response.data.authToken);
+        navigate("/");
         storeToken(response.data.authToken);
         authenticateUser(); 
       })
