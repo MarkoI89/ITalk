@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
       min: 5,
     },
-    picturePath: {
+    avatar: {
       type: String,
       default: "/img/blank-profile-picture-973460_640.png",
     },
