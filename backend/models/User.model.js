@@ -29,7 +29,8 @@ const UserSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "/img/blank-profile-picture-973460_640.png",
+      default:
+        "https://res.cloudinary.com/duucvjqsk/image/upload/v1694080325/ITalk_app_storage/default_avatar.png",
     },
   },
   { timestamps: true }
