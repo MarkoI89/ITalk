@@ -1,10 +1,5 @@
 .messageInput {
-  position: absolute;
-  bottom: 0px;
-  width: 97%;
-  left: 50%;
-  transform: translate(-50%, 0);
-  background-color: transparent;
+  background-color: black;
   border: 1px solid gray;
   border-radius: 20px;
   height: 40px;

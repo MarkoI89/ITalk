@@ -1,0 +1,9 @@
+.newMessageIcon{
+    border: 1px solid white;
+    width: 55px;
+    height: 55px;
+    border-radius: 15px;
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+}

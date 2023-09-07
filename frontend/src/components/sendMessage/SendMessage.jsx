@@ -36,7 +36,11 @@ function SendMessage(props) {
         value={message}
         type="text"
       />
-    <SvgIcon onClick={sendMessage} style={{marginRight: "10px"}} component={SendIcon} />
+      <SvgIcon
+        onClick={sendMessage}
+        style={{ marginRight: "10px" }}
+        component={SendIcon}
+      />
     </form>
   );
 }

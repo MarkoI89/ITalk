@@ -2,9 +2,10 @@ import "./allMessages.css";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/auth.context.jsx";
 import axios from "axios";
-import avatar from "../../assets/blank-profile-picture-973460_640.png";
-import SendMessage from "../sendMessage/SendMessage";
-// import useDetectKeyboardOpen from "use-detect-keyboard-open"
+import OpenChat from "../openChat/OpenChat";
+import FindReceiver from "../findReceiver/FindReceiver";
+import MessageIcon from "@mui/icons-material/Message";
+import { SvgIcon } from "@mui/material";
 
 function AllMessages() {
   const [messages, setMessages] = useState([]);
@@ -14,11 +15,9 @@ function AllMessages() {
   const [itrlId, setItrlId] = useState(null);
   const [itrlAvatar, setItrlAvatar] = useState(null);
   const [chatModal, setChatModal] = useState(null);
+  const [newMessage, setNewMessage] = useState(null);
   const { user } = useContext(AuthContext);
 
-  // const isKeyboardOpen = useDetectKeyboardOpen()
-
-  console.log(user._id);
   const storedToken = localStorage.getItem("authToken");
 
   const openChat = (message, index) => {
@@ -30,28 +29,7 @@ function AllMessages() {
     setChatModal(true);
   };
 
-  const closeChat = (message, index) => {
-    setChatModal(null);
-    setCurrentIndex(null);
-    setItrlId(null);
-    setItrlFirstName(null);
-    setItrlLastName(null);
-    setItrlAvatar(null);
-  };
-
-  console.log(itrlFirstName);
-
-  const interlocutorChat = messages.map((message, index) => {
-    if (
-      message.author._id === user._id &&
-      (message.receiver._id === itrlId || message.author._id === itrlId) &&
-      message.receiver._id === user._id
-    ) {
-      return message.text;
-    }
-  });
-
-  console.log(interlocutorChat);
+  console.log(itrlFirstName)
 
   useEffect(() => {
     axios
@@ -59,9 +37,7 @@ function AllMessages() {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
       .then((res) => {
-        // const msg = res.data;
         setMessages(res.data);
-        // console.log(msg);
       });
   }, [user._id, storedToken]);
   console.log(messages);
@@ -92,11 +68,9 @@ function AllMessages() {
     (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i // remove double elements in array of objects(remove all the message from the same person and leave just latest)
   );
 
-  console.log(user._id);
-  console.log(itrlId);
-
   return (
     <>
+      {messages.length < 1 && <p>No messages here</p>}
       {filteredMessages.map((message, index) => (
         <div
           onClick={() => openChat(message, index)}
@@ -104,7 +78,7 @@ function AllMessages() {
           key={index}
         >
           <div className="profilePicture">
-            <img src={avatar} alt="avatar" />
+            <img src={message.avatar} alt="avatar" />
           </div>
           <div className="chatDetails">
             <div className="usersChatName">
@@ -118,50 +92,39 @@ function AllMessages() {
         </div>
       ))}
       {chatModal && (
-        <div className="chatModal">
-          <div className="interlocutor">
-            <button onClick={() => closeChat()}>x</button>
-            <img
-              style={{
-                height: "50px",
-                width: "50px",
-                borderRadius: "50%",
-                margin: "10px",
-              }}
-              src={avatar}
-              alt=""
-            />
-            <p style={{ margin: "10px" }}>
-              {itrlFirstName} {itrlLastName}
-            </p>
-          </div>
-          <div>
-            {messages.map((message, index) => {
-              if (
-                (message.author._id === user._id &&
-                  message.receiver._id === itrlId) ||
-                (message.author._id === itrlId &&
-                  message.receiver._id === user._id)
-              ) {
-                return (
-                  <div
-                    key={index}
-                    className={
-                      message.author._id === user._id
-                        ? "userAuthorMsg"
-                        : "interlocutorAuthorMsg"
-                    }
-                  >
-                    <div>
-                      <p>{message.text}</p>
-                    </div>
-                  </div>
-                );
-              }
-            })}
-          </div>
-          <SendMessage receiver={itrlId} />
-        </div>
+        <OpenChat
+          messages={messages}
+          setCurrentIndex={setCurrentIndex}
+          setItrlId={setItrlId}
+          setItrlFirstName={setItrlFirstName}
+          setItrlLastName={setItrlLastName}
+          setItrlAvatar={setItrlAvatar}
+          itrlFirstName={itrlFirstName}
+          itrlLastName={itrlLastName}
+          itrlId={itrlId}
+          chatModal={chatModal}
+          setChatModal={setChatModal}
+          itrlAvatar={itrlAvatar}
+        />
+      )}
+      <div className="newMessageIcon" onClick={() => setNewMessage(true)}>
+              <SvgIcon style={{margin:"16px" }} component={MessageIcon} />
+            </div>
+      {newMessage && (
+        <FindReceiver
+          setNewMessage={setNewMessage}
+          chatModal={chatModal}
+          setChatModal={setChatModal}
+          messages={messages}
+          setItrlId={setItrlId}
+          setItrlFirstName={setItrlFirstName}
+          setItrlLastName={setItrlLastName}
+          setItrlAvatar={setItrlAvatar}
+          itrlAvatar={itrlAvatar}
+          itrlFirstName={itrlFirstName}
+          itrlLastName={itrlLastName}
+          itrlId={itrlId}
+        />
       )}
     </>
   );
