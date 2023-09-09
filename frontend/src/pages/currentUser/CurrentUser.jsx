@@ -57,11 +57,11 @@ function CurrentUser() {
               </p>
             </div>
             <div className="currentUserOptions" >
-              <div style={{ marginTop: "10px", marginRight: "25px"}}>
+              <div onClick={() => navigate("/editProfile")} style={{ marginTop: "10px", marginRight: "25px"}}>
                 <SvgIcon component={EditIcon} />
               </div>
               <div style={{ marginTop: "10px", marginRight: "25px" }}>
-                <SvgIcon component={LogoutIcon} />
+                <SvgIcon onClick={logOutUser} component={LogoutIcon} />
               </div>
             </div>
           </div>
